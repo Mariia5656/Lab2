@@ -1,0 +1,43 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2018-03-17 21:04
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: Marya
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+ALTER TABLE `ins_companies`.`agent` 
+CHANGE COLUMN `BRANCH_ID` `BRANCH_ID` INT(11) NOT NULL AFTER `MONEY`,
+ADD INDEX `fk_agent_branch1_idx` (`BRANCH_ID` ASC);
+
+ALTER TABLE `ins_companies`.`money` 
+CHANGE COLUMN `AGENT_ID` `AGENT_ID` INT(11) NOT NULL AFTER `CONTRACT_ID`,
+ADD INDEX `fk_money_contract1_idx` (`CONTRACT_ID` ASC),
+ADD INDEX `fk_money_agent1_idx` (`AGENT_ID` ASC);
+
+ALTER TABLE `ins_companies`.`agent` 
+ADD CONSTRAINT `fk_agent_branch1`
+  FOREIGN KEY (`BRANCH_ID`)
+  REFERENCES `ins_companies`.`branch` (`ID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `ins_companies`.`money` 
+ADD CONSTRAINT `fk_money_contract1`
+  FOREIGN KEY (`CONTRACT_ID`)
+  REFERENCES `ins_companies`.`contract` (`ID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_money_agent1`
+  FOREIGN KEY (`AGENT_ID`)
+  REFERENCES `ins_companies`.`agent` (`ID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
